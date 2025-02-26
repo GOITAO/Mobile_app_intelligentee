@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'Login.dart';
+import 'RegisterPage.dart';
 
 void main() {
-
   runApp(const MyApp());
 }
 
@@ -14,7 +15,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Health App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: Colors.teal, // Couleur de base
+          primary: Colors.teal,
+          secondary: Colors.orangeAccent,
+          background: Colors.white,
+          surface: Colors.white,
+          onPrimary: Colors.white,
+          onSecondary: Colors.white,
+          onBackground: Colors.black,
+          onSurface: Colors.black,
+        ),
         useMaterial3: true,
       ),
       home: const SplashScreen(),
@@ -28,6 +39,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightBlue[50],
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -49,7 +61,6 @@ class SplashScreen extends StatelessWidget {
                 ),
                 child: Image.asset(
                   'images/img.png',
-
                   height: 200,
                   width: 200,
                 ),
@@ -64,6 +75,7 @@ class SplashScreen extends StatelessWidget {
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
+                  color: Colors.teal, // Couleur du texte
                 ),
               ),
               const SizedBox(height: 16),
@@ -72,7 +84,7 @@ class SplashScreen extends StatelessWidget {
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
-                  color: Colors.grey,
+                  color: Colors.black87, // Couleur du texte
                   height: 1.5,
                 ),
               ),
@@ -85,7 +97,13 @@ class SplashScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add sign up navigation
+                        // Navigation vers la page d'enregistrement
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const RegisterPage(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -93,7 +111,7 @@ class SplashScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 0,
-                        backgroundColor: Colors.green, // Updated background
+                        backgroundColor: Colors.teal, // Couleur de fond
                       ),
                       child: const Text(
                         'Sign Up',
@@ -109,7 +127,13 @@ class SplashScreen extends StatelessWidget {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Add sign in navigation
+                        // Navigation vers la page de connexion
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Login(),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -117,7 +141,7 @@ class SplashScreen extends StatelessWidget {
                           borderRadius: BorderRadius.circular(12),
                         ),
                         elevation: 0,
-                        backgroundColor: Colors.blue, // Updated background
+                        backgroundColor: Colors.orangeAccent, // Couleur de fond
                       ),
                       child: const Text(
                         'Sign In',
@@ -149,3 +173,5 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
+
+
