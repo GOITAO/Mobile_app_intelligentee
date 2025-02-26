@@ -75,12 +75,12 @@ class SplashScreen extends StatelessWidget {
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
-                  color: Colors.teal, // Couleur du texte
+                  color: Color.fromARGB(255, 35, 111, 252), // Couleur du texte
                 ),
               ),
               const SizedBox(height: 16),
               const Text(
-                'Predict dermatological and chronic diseases with advanced AI. Chat with our sentiment analysis bot for better guidance.',
+                'Predict dermatological and chronic diseases with advanced AI.',
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 16,
@@ -91,11 +91,11 @@ class SplashScreen extends StatelessWidget {
 
               const Spacer(),
 
-              // Buttons with gradient style
+              // Buttons with outlined style and arrows
               Row(
                 children: [
                   Expanded(
-                    child: ElevatedButton(
+                    child: OutlinedButton(
                       onPressed: () {
                         // Navigation vers la page d'enregistrement
                         Navigator.push(
@@ -105,27 +105,39 @@ class SplashScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: Color.fromARGB(255, 35, 111, 252), width: 2),
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: Color.fromARGB(255, 35, 111, 252), // Couleur du texte
+                        overlayColor: Color.fromARGB(255, 35, 111, 252).withOpacity(0.1), // Effet de survol
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        elevation: 0,
-                        backgroundColor: Colors.teal, // Couleur de fond
                       ),
-                      child: const Text(
-                        'Sign Up',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Sign Up',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 8), // Espace entre le texte et la flèche
+                          Icon(
+                            Icons.arrow_forward,
+                            color: Color.fromARGB(255, 35, 111, 252), // Couleur de la flèche
+                            size: 20,
+                          ),
+                        ],
                       ),
                     ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
-                    child: ElevatedButton(
+                    child: OutlinedButton(
                       onPressed: () {
                         // Navigation vers la page de connexion
                         Navigator.push(
@@ -135,21 +147,33 @@ class SplashScreen extends StatelessWidget {
                           ),
                         );
                       },
-                      style: ElevatedButton.styleFrom(
+                      style: OutlinedButton.styleFrom(
+                        side: BorderSide(color: const Color.fromARGB(255, 19, 237, 154), width: 2),
+                        backgroundColor: Colors.transparent,
+                        foregroundColor: const Color.fromARGB(255, 19, 237, 154), // Couleur du texte
+                        overlayColor: const Color.fromARGB(255, 19, 237, 154).withOpacity(0.1), // Effet de survol
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
                         ),
-                        elevation: 0,
-                        backgroundColor: Colors.orangeAccent, // Couleur de fond
                       ),
-                      child: const Text(
-                        'Sign In',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Sign In',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const SizedBox(width: 8), // Espace entre le texte et la flèche
+                          Icon(
+                            Icons.arrow_forward,
+                            color: const Color.fromARGB(255, 19, 237, 154), // Couleur de la flèche
+                            size: 20,
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -173,5 +197,3 @@ class SplashScreen extends StatelessWidget {
     );
   }
 }
-
-

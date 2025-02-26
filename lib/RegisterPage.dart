@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'Home.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({super.key});
@@ -9,7 +10,7 @@ class RegisterPage extends StatelessWidget {
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
         title: const Text('Inscription'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color.fromARGB(255, 35, 111, 252), // Bleu
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
@@ -20,13 +21,11 @@ class RegisterPage extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Nom',
-                labelStyle: const TextStyle(color: Colors.teal),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                labelStyle: const TextStyle(color: Color.fromARGB(255, 35, 111, 252)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 35, 111, 252)),
                 ),
               ),
             ),
@@ -36,13 +35,11 @@ class RegisterPage extends StatelessWidget {
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: const TextStyle(color: Colors.teal),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                labelStyle: const TextStyle(color: Color.fromARGB(255, 35, 111, 252)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 35, 111, 252)),
                 ),
               ),
             ),
@@ -53,54 +50,34 @@ class RegisterPage extends StatelessWidget {
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Mot de passe',
-                labelStyle: const TextStyle(color: Colors.teal),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                labelStyle: const TextStyle(color: Color.fromARGB(255, 35, 111, 252)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 35, 111, 252)),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Bouton d'inscription
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Action d'inscription
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: Colors.teal,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color.fromARGB(255, 35, 111, 252), // Bleu
                 ),
                 child: const Text(
                   "S'inscrire",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Lien pour se connecter
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context); // Retour à la page de connexion
-              },
-              child: const Text(
-                'Vous avez déjà un compte ? Connectez-vous',
-                style: TextStyle(
-                  color: Colors.teal,
-                  fontSize: 14,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
 import 'RegisterPage.dart';
+import 'Home.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -11,85 +11,60 @@ class Login extends StatelessWidget {
       backgroundColor: Colors.lightBlue[50],
       appBar: AppBar(
         title: const Text('Connexion'),
-        backgroundColor: Colors.teal,
+        backgroundColor: const Color.fromARGB(255, 35, 111, 252), // Bleu
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Champ pour l'email
+            // Champ email
             TextFormField(
               decoration: InputDecoration(
                 labelText: 'Email',
-                labelStyle: const TextStyle(color: Colors.teal),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                labelStyle: const TextStyle(color: Color.fromARGB(255, 35, 111, 252)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 35, 111, 252)),
                 ),
               ),
             ),
             const SizedBox(height: 20),
 
-            // Champ pour le mot de passe
+            // Champ mot de passe
             TextFormField(
               obscureText: true,
               decoration: InputDecoration(
                 labelText: 'Mot de passe',
-                labelStyle: const TextStyle(color: Colors.teal),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+                labelStyle: const TextStyle(color: Color.fromARGB(255, 35, 111, 252)),
+                border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 focusedBorder: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(12),
-                  borderSide: const BorderSide(color: Colors.teal),
+                  borderSide: const BorderSide(color: Color.fromARGB(255, 35, 111, 252)),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
             // Bouton de connexion
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () {
-                  // Action de connexion
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
+                  );
                 },
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  backgroundColor: Colors.teal,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color.fromARGB(255, 19, 237, 154), // Vert
                 ),
                 child: const Text(
                   'Se connecter',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Lien pour s'inscrire
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()),
-                );
-              },
-              child: const Text(
-                "Vous n'avez pas de compte ? Inscrivez-vous",
-                style: TextStyle(
-                  color: Colors.teal,
-                  fontSize: 14,
+                  style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
             ),
