@@ -18,6 +18,14 @@ class Login extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            // Ajouter une icône en haut
+            const Icon(
+              Icons.account_circle, // Icône de profil
+              size: 100, // Taille de l'icône
+              color: Color.fromARGB(255, 35, 111, 252), // Couleur de l'icône
+            ),
+            const SizedBox(height: 20), // Espacement après l'icône
+
             // Champ email
             TextFormField(
               decoration: InputDecoration(

@@ -81,6 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
+        iconSize: 32, // Augmenter la taille des icônes
         selectedItemColor: _primaryColor,
         unselectedItemColor: const Color.fromARGB(255, 217, 215, 215),
         items: const [
@@ -143,15 +144,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       Text(
                         'My ${healthIcon.label}',
                         style: TextStyle(
-                          fontSize: 14,
-                          color: Colors.white,
-                          fontWeight: FontWeight.w500),
+                            fontSize: 14,
+                            color: Colors.white,
+                            fontWeight: FontWeight.w500),
                       ),
                       const SizedBox(width: 8),
                       Icon(
-                        Icons.arrow_forward,
-                        color: _secondaryColor,
-                        size: 18),
+                          Icons.arrow_forward,
+                          color: _secondaryColor,
+                          size: 18),
                     ],
                   ),
                 ),
@@ -176,8 +177,8 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             title,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: _primaryColor),
+                fontWeight: FontWeight.bold,
+                color: _primaryColor),
           )
         ],
       ),

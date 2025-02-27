@@ -48,21 +48,23 @@ class SplashScreen extends StatelessWidget {
             children: [
               const Spacer(),
 
-              // Logo with shadow effect
-              Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withAlpha(25), // Updated withAlpha
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
-                    ),
-                  ],
-                ),
-                child: Image.asset(
-                  'images/img.png',
-                  height: 200,
-                  width: 200,
+              // Centrer l'image horizontalement
+              Center(
+                child: Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withAlpha(25), // Updated withAlpha
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Image.asset(
+                    'images/img.png',
+                    height: 200,
+                    width: 200,
+                  ),
                 ),
               ),
 
