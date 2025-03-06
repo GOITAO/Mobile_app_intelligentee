@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'RegisterPage.dart';
 import 'Home.dart';
+//import 'auth_service.dart'; // Assurez-vous d'avoir une classe avec loginWithGoogle et loginWithFacebook
 
 class Login extends StatelessWidget {
   const Login({super.key});
@@ -20,11 +21,11 @@ class Login extends StatelessWidget {
           children: [
             // Ajouter une icône en haut
             const Icon(
-              Icons.account_circle, // Icône de profil
-              size: 100, // Taille de l'icône
-              color: Color.fromARGB(255, 35, 111, 252), // Couleur de l'icône
+              Icons.account_circle,
+              size: 100,
+              color: Color.fromARGB(255, 35, 111, 252),
             ),
-            const SizedBox(height: 20), // Espacement après l'icône
+            const SizedBox(height: 20),
 
             // Champ email
             TextFormField(
@@ -68,13 +69,35 @@ class Login extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  backgroundColor: const Color.fromARGB(255, 19, 237, 154), // Vert
+                  backgroundColor: const Color.fromARGB(255, 19, 237, 154),
                 ),
                 child: const Text(
                   'Se connecter',
                   style: TextStyle(color: Colors.white, fontSize: 16),
                 ),
               ),
+            ),
+            const SizedBox(height: 20),
+
+            // Boutons de connexion avec Google et Facebook
+            Column(
+              children: [
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    //await loginWithGoogle();
+                  },
+                  icon: const Icon(Icons.g_mobiledata, color: Colors.red),
+                  label: const Text("Se connecter avec Google"),
+                ),
+                const SizedBox(height: 10),
+                ElevatedButton.icon(
+                  onPressed: () async {
+                    //await loginWithFacebook();
+                  },
+                  icon: const Icon(Icons.facebook, color: Colors.blue),
+                  label: const Text("Se connecter avec Facebook"),
+                ),
+              ],
             ),
           ],
         ),
