@@ -1,4 +1,7 @@
+import 'package:app/QuestionnaireDiabeteApp.dart';
 import 'package:flutter/material.dart';
+import 'package:app/MaladiesInfantilesApp.dart';
+import 'package:app/HeartHealthApp.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,7 +15,14 @@ class _HomeScreenState extends State<HomeScreen> {
     HealthIcon(imagePath: 'images/heart.png', label: 'Heart'),
     HealthIcon(imagePath: 'images/kidney.png', label: 'Kidney'),
     HealthIcon(imagePath: 'images/diabet.png', label: 'Insulin'),
+
   ];
+  final List<Widget> pages = [
+    HeartHealthApp(),   MaladiesInfantilesApp()
+,   QuestionnaireDiabeteApp()
+
+  ];
+
 
   final Color _primaryColor = const Color.fromARGB(255, 35, 111, 252);
   final Color _secondaryColor = const Color.fromARGB(255, 19, 237, 154);
@@ -74,7 +84,12 @@ class _HomeScreenState extends State<HomeScreen> {
               Wrap(
                 spacing: 20,
                 runSpacing: 20,
-                children: _healthIcons.map((icon) => _buildHealthIcon(icon)).toList(),
+                children: _healthIcons.asMap().entries.map((entry) {
+                  final index = entry.key; // Indice de l'icône
+                  final icon = entry.value; // Icône correspondante
+                  return _buildHealthIcon(icon, pages[index]); // Utiliser l'indice pour accéder à la page correspondante
+                })
+                    .toList(),
               ),
             ],
           ),
@@ -93,9 +108,17 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildHealthIcon(HealthIcon healthIcon) {
+  Widget _buildHealthIcon(HealthIcon healthIcon, Widget targetPage) {
     return GestureDetector(
-      onTap: () => setState(() => healthIcon.isSelected = !healthIcon.isSelected),
+      onTap: () {
+        // Naviguer vers la page passée en paramètre
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => targetPage,
+          ),
+        );
+      },
       child: SizedBox(
         width: 150,
         height: 150,
@@ -162,7 +185,6 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _buildActionCard(String title, IconData icon) {
     return Container(
       padding: const EdgeInsets.all(15),
