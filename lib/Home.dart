@@ -1,3 +1,5 @@
+
+
 import 'package:app/QuestionnaireDiabeteApp.dart';
 import 'package:flutter/material.dart';
 import 'package:app/MaladiesInfantilesApp.dart';
@@ -19,7 +21,7 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
   final List<Widget> pages = [
     HeartHealthApp(),   MaladiesInfantilesApp()
-,   QuestionnaireDiabeteApp()
+    ,   QuestionnaireDiabeteApp()
 
   ];
 
@@ -110,15 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildHealthIcon(HealthIcon healthIcon, Widget targetPage) {
     return GestureDetector(
-      onTap: () {
-        // Naviguer vers la page passée en paramètre
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => targetPage,
-          ),
-        );
-      },
+      onTap: () => setState(() => healthIcon.isSelected = !healthIcon.isSelected),
       child: SizedBox(
         width: 150,
         height: 150,
@@ -164,18 +158,39 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      Text(
-                        'My ${healthIcon.label}',
-                        style: TextStyle(
+                      // Encapsuler le Text dans un GestureDetector
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => targetPage,
+                            ),
+                          );
+                        },
+                        child: Text(
+                          'My ${healthIcon.label}',
+                          style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
-                            fontWeight: FontWeight.w500),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
                       ),
+
+                      // Espacement
                       const SizedBox(width: 8),
-                      Icon(
+
+                      // Encapsuler l'Icon dans un autre GestureDetector
+                      GestureDetector(
+                        onTap: () {
+                        },
+                        child: Icon(
                           Icons.arrow_forward,
                           color: _secondaryColor,
-                          size: 18),
+                          size: 18,
+                        ),
+                      ),
                     ],
                   ),
                 ),
@@ -219,3 +234,22 @@ class HealthIcon {
     this.isSelected = false,
   });
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
