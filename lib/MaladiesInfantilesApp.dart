@@ -1,15 +1,18 @@
-import 'package:app/Home.dart';
 import 'package:flutter/material.dart';
+import 'contact_service.dart';
 
+void main() {
+  runApp(const MaladiesInfantilesApp());
+}
 
 class MaladiesInfantilesApp extends StatelessWidget {
+  const MaladiesInfantilesApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Maladies Infantiles',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       debugShowCheckedModeBanner: false,
       home: QuestionnairePage(),
     );
@@ -58,14 +61,13 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
     if (_currentQuestionIndex < _questions.length - 1) {
       _currentQuestionIndex++;
     } else {
-      // Calculer la probabilité après la dernière question
       _probability = (_ouiCount / _questions.length) * 100;
+
       if (_probability >= 50) {
-        // Naviguer vers la nouvelle page si la probabilité est >= 50%
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SecondPage(),
+            builder: (context) => SecondPage(token: "votre_token_ici"),
           ),
         );
       } else {
@@ -79,7 +81,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Résultat"),
+          title: const Text("Résultat"),
           content: Text(_getDiagnosisMessage(_probability)),
           actions: [
             TextButton(
@@ -87,7 +89,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                 Navigator.of(context).pop();
                 _resetQuestionnaire();
               },
-              child: Text("Recommencer"),
+              child: const Text("Recommencer"),
             ),
           ],
         );
@@ -117,10 +119,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Pre-consultation'),
-        backgroundColor: Colors.blue[900],
-      ),
+      appBar: AppBar(title: const Text('Pre-consultation'), backgroundColor: Colors.blue[900]),
       backgroundColor: Colors.blue,
       body: Center(
         child: Container(
@@ -134,100 +133,44 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
+                offset: const Offset(0, 3),
+              )
             ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Text(
-                _questions[_currentQuestionIndex],
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
+              Text(_questions[_currentQuestionIndex], style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
+              const SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  ElevatedButton(
-                    onPressed: _repondreOui,
-                    child: Text('Oui'),
-                  ),
-                  ElevatedButton(
-                    onPressed: _repondreNon,
-                    child: Text('Non'),
-                  ),
+                  ElevatedButton(onPressed: _repondreOui, child: const Text('Oui')),
+                  ElevatedButton(onPressed: _repondreNon, child: const Text('Non')),
                 ],
               ),
-              SizedBox(height: 20),
-              Text(
-                "Question ${_currentQuestionIndex + 1} sur ${_questions.length}",
-                style: TextStyle(fontSize: 14),
-                textAlign: TextAlign.center,
-              ),
+              const SizedBox(height: 20),
+              Text("Question ${_currentQuestionIndex + 1} sur ${_questions.length}", textAlign: TextAlign.center),
             ],
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-        currentIndex: 2,
-        selectedItemColor: Colors.blue[900],
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
-              );
-              break;
-            case 1:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilPage()),
-              );
-              break;
-            case 2:
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HistoryPage()),
-              );
-              break;
-          }
-        },
       ),
     );
   }
 }
 
-// Nouvelle page avec deux champs
 class SecondPage extends StatelessWidget {
+  final String token;
+
+  final TextEditingController _poidsController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _symptomsController = TextEditingController();
+
+  SecondPage({super.key, required this.token});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Informations supplémentaires'),
-        backgroundColor: Colors.blue[900],
-      ),
+      appBar: AppBar(title: const Text('Informations de l\'enfant'), backgroundColor: Colors.blue[900]),
       backgroundColor: Colors.blue,
       body: Center(
         child: Container(
@@ -241,160 +184,60 @@ class SecondPage extends StatelessWidget {
                 color: Colors.black.withOpacity(0.1),
                 spreadRadius: 5,
                 blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
+                offset: const Offset(0, 3),
+              )
             ],
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              TextField(
+                controller: _poidsController,
+                keyboardType: const TextInputType.numberWithOptions(decimal: true),
+                decoration: const InputDecoration(labelText: 'Poids de l\'enfant (kg)', border: OutlineInputBorder()),
+              ),
+              const SizedBox(height: 20),
               TextField(
                 controller: _ageController,
-                decoration: InputDecoration(
-                  labelText: 'Âge de l\'enfant',
-                  border: OutlineInputBorder(),
-                ),
+                keyboardType: TextInputType.number,
+                decoration: const InputDecoration(labelText: 'Âge de l\'enfant', border: OutlineInputBorder()),
               ),
-              SizedBox(height: 20),
-              TextField(
-                controller: _symptomsController,
-                decoration: InputDecoration(
-                  labelText: 'Symptômes supplémentaires',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => ResultPage(
-                        age: _ageController.text,
-                        symptoms: _symptomsController.text,
-                      ),
-                    ),
-                  );
+                  final poids = double.tryParse(_poidsController.text);
+                  final age = double.tryParse(_ageController.text);
+
+                  if (poids != null && age != null) {
+                    final contactData = {
+                      "poids": poids,
+                      "age": age,
+                    };
+
+                    print("Données envoyées: $contactData");
+
+                    ContactService().createContact(poids, age, token).then((response) {
+                      if (response != null && response['error'] == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Contact créé avec succès")),
+                        );
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Erreur lors de la création du contact")),
+                        );
+                      }
+                    });
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Veuillez entrer des valeurs valides")),
+                    );
+                  }
                 },
-                child: Text('Analyser'),
+                child: const Text('Sauvegarder'),
               ),
             ],
           ),
         ),
-      ),
-    );
-  }
-}
-
-// Page de résultat finale
-class ResultPage extends StatelessWidget {
-  final String age;
-  final String symptoms;
-
-  ResultPage({required this.age, required this.symptoms});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Résultat Final'),
-        backgroundColor: Colors.blue[900],
-      ),
-      backgroundColor: Colors.blue,
-      body: Center(
-        child: Container(
-          width: 300,
-          padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.black.withOpacity(0.1),
-                spreadRadius: 5,
-                blurRadius: 7,
-                offset: Offset(0, 3),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                'Résultat de l\'analyse',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              Text(
-                'Âge de l\'enfant: $age',
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Symptômes: $symptoms',
-                style: TextStyle(fontSize: 18),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.popUntil(context, (route) => route.isFirst);
-                },
-                child: Text('Recommencer'),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-// Pages supplémentaires
-class HomePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Accueil - Maladies Infantiles'),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: Center(
-        child: Text('Bienvenue sur l\'application de suivi des maladies infantiles.'),
-      ),
-    );
-  }
-}
-
-class ProfilPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Profil de l\'enfant'),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: Center(
-        child: Text('Informations sur le profil de l\'enfant.'),
-      ),
-    );
-  }
-}
-
-class HistoryPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Historique des symptômes'),
-        backgroundColor: Colors.blue[900],
-      ),
-      body: Center(
-        child: Text('Historique des symptômes et des analyses.'),
       ),
     );
   }
