@@ -2,15 +2,24 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class UserService {
-  final String baseUrl = "http://192.168.0.14:5000/users";
+  final String baseUrl =
+      "http://172.20.10.4:5000/users"; // Remplacez par l'URL de votre API
 
   // Inscription de l'utilisateur
-  Future<Map<String, dynamic>?> registerUser(String username, String email, String password) async {
+  Future<Map<String, dynamic>?> registerUser(
+    String username,
+    String email,
+    String password,
+  ) async {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
         headers: {"Content-Type": "application/json"},
-        body: jsonEncode({"username": username, "email": email, "password": password}),
+        body: jsonEncode({
+          "username": username,
+          "email": email,
+          "password": password,
+        }),
       );
 
       if (response.statusCode == 201) {
