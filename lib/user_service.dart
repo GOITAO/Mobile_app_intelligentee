@@ -5,7 +5,11 @@ class UserService {
   final String baseUrl = "http://192.168.0.6:5000/users"; // Utilisez HTTPS pour plus de sécurité
 
   // Inscription de l'utilisateur
-  Future<Map<String, dynamic>?> registerUser(String username, String email, String password) async {
+  Future<Map<String, dynamic>?> registerUser(
+    String username,
+    String email,
+    String password,
+  ) async {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),

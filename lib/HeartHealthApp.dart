@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'Home.dart';
-import 'MaladiesInfantilesApp.dart';
-import 'QuestionnaireDiabeteApp.dart';
-
-
+void main() {
+  runApp(HeartHealthApp());
+}
 
 class HeartHealthApp extends StatelessWidget {
   @override
@@ -72,14 +70,14 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Fermer la boîte de dialogue
-                _resetQuestionnaire(); // Réinitialiser le questionnaire
+                Navigator.of(context).pop();
+                _resetQuestionnaire();
               },
               child: Text("Recommencer"),
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Retour à l'accueil
+                Navigator.of(context).pop();
               },
               child: Text("Retour à l'accueil"),
             ),
@@ -115,7 +113,7 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Retour à la page précédente
+            Navigator.pop(context);
           },
         ),
       ),
@@ -168,7 +166,6 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 20),
-
             ],
           ),
         ),
@@ -177,42 +174,97 @@ class _QuestionnairePageState extends State<QuestionnairePage> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Accueil',
           ),
-
           BottomNavigationBarItem(
             icon: Icon(Icons.history),
-            label: 'History',
+            label: 'Historique',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profil',
           ),
         ],
-        currentIndex: 2,
+        currentIndex: 0,
         selectedItemColor: Colors.blue[900],
         onTap: (int index) {
           switch (index) {
             case 0:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(builder: (context) => HomePage()),
               );
               break;
             case 1:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfilPage()),
+                MaterialPageRoute(builder: (context) => HistoryPage()),
               );
               break;
             case 2:
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => HistoryPage()),
+                MaterialPageRoute(builder: (context) => ProfilPage()),
               );
               break;
           }
         },
+      ),
+    );
+  }
+}
+
+// ---------------------- Pages supplémentaires ----------------------
+
+class HomePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Accueil"),
+        backgroundColor: Colors.blue[900],
+      ),
+      body: Center(
+        child: Text(
+          "Bienvenue sur la page d'accueil",
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+class HistoryPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Historique"),
+        backgroundColor: Colors.blue[900],
+      ),
+      body: Center(
+        child: Text(
+          "Aucun historique disponible.",
+          style: TextStyle(fontSize: 18),
+        ),
+      ),
+    );
+  }
+}
+
+class ProfilPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profil"),
+        backgroundColor: Colors.blue[900],
+      ),
+      body: Center(
+        child: Text(
+          "Informations de profil utilisateur.",
+          style: TextStyle(fontSize: 18),
+        ),
       ),
     );
   }

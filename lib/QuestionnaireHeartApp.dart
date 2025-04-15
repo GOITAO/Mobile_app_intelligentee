@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class QuestionnaireDiabeteApp extends StatelessWidget {
+class QuestionnaireHeartApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Diabetes Questionnaire',
+      title: 'Heart Questionnaire',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.blue),
+      theme: ThemeData(primarySwatch: Colors.red),
       home: QuestionnaireScreen(),
     );
   }
@@ -20,19 +20,19 @@ class QuestionnaireScreen extends StatefulWidget {
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   int _currentQuestionIndex = 0;
   int _yesCount = 0;
-  final Color _primaryColor = Color.fromARGB(255, 35, 111, 252);
+  final Color _primaryColor = Colors.red;
 
   final List<String> _questions = [
-    "Do you experience frequent thirst?",
-    "Do you feel excessive hunger?",
-    "Do you have frequent urination?",
-    "Do you experience sudden weight loss?",
-    "Do you feel tired all the time?",
-    "Do you have blurry vision?",
-    "Do you heal wounds slowly?",
-    "Do you often have dry skin?",
-    "Do you have tingling or numbness in hands or feet?",
-    "Do you have high blood sugar levels?",
+    "Do you experience chest pain or discomfort?",
+    "Do you feel shortness of breath during physical activity?",
+    "Do you often feel fatigue or weakness?",
+    "Do you have irregular heartbeats?",
+    "Do you experience swelling in feet or legs?",
+    "Do you sweat excessively during light activity?",
+    "Do you have high blood pressure?",
+    "Do you have a family history of heart disease?",
+    "Do you experience dizziness or lightheadedness?",
+    "Do you smoke regularly?"
   ];
 
   void _nextQuestion(bool isYes) {
@@ -63,9 +63,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               child: Text("Restart"),
             ),
             TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
+              onPressed: () => Navigator.of(context).pop(),
               child: Text("Back to Home"),
             ),
           ],
@@ -75,13 +73,9 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   }
 
   String _getDiagnosisMessage(double probability) {
-    if (probability >= 70) {
-      return "High risk of diabetes. Please consult a doctor.";
-    } else if (probability >= 40) {
-      return "Moderate risk. Monitor your symptoms.";
-    } else {
-      return "Low risk. Keep monitoring your health.";
-    }
+    if (probability >= 70) return "High risk of heart disease. Consult a cardiologist.";
+    if (probability >= 40) return "Moderate risk. Monitor your symptoms closely.";
+    return "Low risk. Stay active and maintain a healthy lifestyle.";
   }
 
   void _resetQuestionnaire() {
@@ -93,6 +87,10 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   @override
   Widget build(BuildContext context) {
+    return _buildQuestionnaire("images/heart.png");
+  }
+
+  Widget _buildQuestionnaire(String imagePath) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Stack(
@@ -102,19 +100,12 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
             children: [
               _buildProgressIndicator(),
               const SizedBox(height: 30),
-              Image.asset("images/diabet.png", height: 100),
+              Image.asset(imagePath, height: 100),
               const SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  "Let's start checking your insulin level by some basic questions",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
+              Text(
+                "Let's check your heart health with some questions",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 40),
               Container(
@@ -125,11 +116,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 ),
                 child: Text(
                   "Question ${_currentQuestionIndex + 1}",
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
+                  style: TextStyle(color: Colors.white, fontSize: 24),
                 ),
               ),
               const SizedBox(height: 20),
@@ -138,18 +125,12 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 child: Text(
                   _questions[_currentQuestionIndex],
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18, color: Colors.black),
+                  style: TextStyle(fontSize: 18),
                 ),
               ),
               const SizedBox(height: 30),
               _buildAnswerButtons(),
             ],
-          ),
-          Positioned(
-            bottom: 10,
-            left: 0,
-            right: 0,
-            child: Center(child: Image.asset("images/img.png", height: 60)),
           ),
         ],
       ),
@@ -166,10 +147,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
           width: _currentQuestionIndex == index ? 15 : 10,
           height: _currentQuestionIndex == index ? 15 : 10,
           decoration: BoxDecoration(
-            color:
-                _currentQuestionIndex >= index
-                    ? _primaryColor
-                    : Colors.grey[300],
+            color: _currentQuestionIndex >= index ? _primaryColor : Colors.grey[300],
             shape: BoxShape.circle,
           ),
         );
@@ -181,20 +159,15 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildAnswerButton("Yes", Colors.blue, Colors.white, Icons.check, true),
+        _buildAnswerButton("Yes", Colors.red, Colors.white, Icons.check, true),
         const SizedBox(width: 20),
-        _buildAnswerButton("No", Colors.red, Colors.white, Icons.close, false),
+        _buildAnswerButton("No", Colors.grey, Colors.white, Icons.close, false),
       ],
     );
   }
 
   Widget _buildAnswerButton(
-    String text,
-    Color bgColor,
-    Color textColor,
-    IconData icon,
-    bool isYes,
-  ) {
+      String text, Color bgColor, Color textColor, IconData icon, bool isYes) {
     return ElevatedButton.icon(
       onPressed: () => _nextQuestion(isYes),
       icon: Icon(icon, color: textColor),
