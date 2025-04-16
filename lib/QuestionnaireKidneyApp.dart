@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:app/main.dart';
 
 class QuestionnaireKidneyApp extends StatelessWidget {
   @override
@@ -20,6 +21,8 @@ class QuestionnaireScreen extends StatefulWidget {
 class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   int _currentQuestionIndex = 0;
   int _yesCount = 0;
+  int _selectedIndex = 0;
+
   final Color _primaryColor = Colors.teal;
 
   final List<String> _questions = [
@@ -46,13 +49,20 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     });
   }
 
+  void _resetQuestionnaire() {
+    setState(() {
+      _currentQuestionIndex = 0;
+      _yesCount = 0;
+    });
+  }
+
   void _showResultDialog() {
     double probability = (_yesCount / _questions.length) * 100;
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Result"),
+          title: const Text("Result"),
           content: Text(_getDiagnosisMessage(probability)),
           actions: [
             TextButton(
@@ -60,11 +70,17 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
                 Navigator.of(context).pop();
                 _resetQuestionnaire();
               },
-              child: Text("Restart"),
+              child: const Text("Restart"),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text("Back to Home"),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _resetQuestionnaire();
+                setState(() {
+                  _selectedIndex = 0; // Retour à "Home"
+                });
+              },
+              child: const Text("Back to Home"),
             ),
           ],
         );
@@ -78,60 +94,83 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     return "Low risk. Keep hydrated and maintain a healthy diet.";
   }
 
-  void _resetQuestionnaire() {
+  void _onNavBarTap(int index) {
     setState(() {
-      _currentQuestionIndex = 0;
-      _yesCount = 0;
+      _selectedIndex = index;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return _buildQuestionnaire("images/kidney.png");
-  }
-
-  Widget _buildQuestionnaire(String imagePath) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Kidney Questionnaire"),
+        backgroundColor: _primaryColor,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context); // Retour à la page précédente
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildProgressIndicator(),
-              const SizedBox(height: 30),
-              Image.asset(imagePath, height: 100),
-              const SizedBox(height: 20),
-              Text(
-                "Let's check your kidney health with some questions",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 40),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _primaryColor,
-                  borderRadius: BorderRadius.circular(20),
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 30),
+                _buildProgressIndicator(),
+                const SizedBox(height: 30),
+                Image.asset("images/kidney.png", height: 100),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Let's check your kidney health with some questions",
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                child: Text(
-                  "Question ${_currentQuestionIndex + 1}",
-                  style: TextStyle(color: Colors.white, fontSize: 24),
+                const SizedBox(height: 40),
+                Container(
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: _primaryColor,
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Text(
+                    "Question ${_currentQuestionIndex + 1}",
+                    style: const TextStyle(color: Colors.white, fontSize: 24),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  _questions[_currentQuestionIndex],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  child: Text(
+                    _questions[_currentQuestionIndex],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 18),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 30),
-              _buildAnswerButtons(),
-            ],
+                const SizedBox(height: 30),
+                _buildAnswerButtons(),
+                const SizedBox(height: 40),
+              ],
+            ),
           ),
+        ],
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        selectedItemColor: _primaryColor,
+        unselectedItemColor: Colors.grey,
+        onTap: _onNavBarTap,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: "History"),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
         ],
       ),
     );
@@ -142,8 +181,8 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(_questions.length, (index) {
         return AnimatedContainer(
-          duration: Duration(milliseconds: 300),
-          margin: EdgeInsets.symmetric(horizontal: 5),
+          duration: const Duration(milliseconds: 300),
+          margin: const EdgeInsets.symmetric(horizontal: 5),
           width: _currentQuestionIndex == index ? 15 : 10,
           height: _currentQuestionIndex == index ? 15 : 10,
           decoration: BoxDecoration(
@@ -159,7 +198,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildAnswerButton("Yes", Colors.teal, Colors.white, Icons.check, true),
+        _buildAnswerButton("Yes", _primaryColor, Colors.white, Icons.check, true),
         const SizedBox(width: 20),
         _buildAnswerButton("No", Colors.redAccent, Colors.white, Icons.close, false),
       ],
@@ -174,7 +213,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       label: Text(text, style: TextStyle(fontSize: 18, color: textColor)),
       style: ElevatedButton.styleFrom(
         backgroundColor: bgColor,
-        padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );

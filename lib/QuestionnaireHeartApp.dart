@@ -1,5 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'HeartHealthApp.dart';
+
+void main() {
+  runApp(QuestionnaireHeartApp());
+}
+
 class QuestionnaireHeartApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -7,7 +13,53 @@ class QuestionnaireHeartApp extends StatelessWidget {
       title: 'Heart Questionnaire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.red),
-      home: QuestionnaireScreen(),
+      home: QuestionnairePage(),
+    );
+  }
+}
+
+class MainNavigation extends StatefulWidget {
+  final int initialIndex;
+
+  MainNavigation({this.initialIndex = 0});
+
+  @override
+  _MainNavigationState createState() => _MainNavigationState();
+}
+
+class _MainNavigationState extends State<MainNavigation> {
+  late int _selectedIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.initialIndex;
+  }
+
+  final List<Widget> _pages = [
+    QuestionnaireScreen(),
+    HistoryScreen(),
+    ProfileScreen(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() => _selectedIndex = index);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: _pages[_selectedIndex],
+      bottomNavigationBar: BottomNavigationBar(
+        selectedItemColor: Colors.red,
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.favorite), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.history), label: 'History'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+      ),
     );
   }
 }
@@ -63,7 +115,13 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
               child: Text("Restart"),
             ),
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => MainNavigation(initialIndex: 0)),
+                );
+              },
               child: Text("Back to Home"),
             ),
           ],
@@ -87,51 +145,56 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildQuestionnaire("images/heart.png");
-  }
-
-  Widget _buildQuestionnaire(String imagePath) {
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Heart Questionnaire"),
+        backgroundColor: _primaryColor,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => MainNavigation(initialIndex: 0)),
+            );
+          },
+        ),
+      ),
       backgroundColor: Colors.white,
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _buildProgressIndicator(),
-              const SizedBox(height: 30),
-              Image.asset(imagePath, height: 100),
-              const SizedBox(height: 20),
-              Text(
-                "Let's check your heart health with some questions",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 40),
-              Container(
-                padding: EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: _primaryColor,
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                child: Text(
-                  "Question ${_currentQuestionIndex + 1}",
-                  style: TextStyle(color: Colors.white, fontSize: 24),
-                ),
-              ),
-              const SizedBox(height: 20),
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: 30),
-                child: Text(
-                  _questions[_currentQuestionIndex],
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-              const SizedBox(height: 30),
-              _buildAnswerButtons(),
-            ],
+          _buildProgressIndicator(),
+          const SizedBox(height: 30),
+          Image.asset("images/heart.png", height: 100),
+          const SizedBox(height: 20),
+          Text(
+            "Let's check your heart health with some questions",
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
+          const SizedBox(height: 40),
+          Container(
+            padding: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: _primaryColor,
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Text(
+              "Question ${_currentQuestionIndex + 1}",
+              style: TextStyle(color: Colors.white, fontSize: 24),
+            ),
+          ),
+          const SizedBox(height: 20),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: Text(
+              _questions[_currentQuestionIndex],
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          const SizedBox(height: 30),
+          _buildAnswerButtons(),
         ],
       ),
     );
@@ -167,7 +230,12 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   }
 
   Widget _buildAnswerButton(
-      String text, Color bgColor, Color textColor, IconData icon, bool isYes) {
+      String text,
+      Color bgColor,
+      Color textColor,
+      IconData icon,
+      bool isYes,
+      ) {
     return ElevatedButton.icon(
       onPressed: () => _nextQuestion(isYes),
       icon: Icon(icon, color: textColor),
@@ -178,5 +246,21 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
+  }
+}
+
+// Placeholder for History tab
+class HistoryScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("History Page", style: TextStyle(fontSize: 20)));
+  }
+}
+
+// Placeholder for Profile tab
+class ProfileScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(child: Text("Profile Page", style: TextStyle(fontSize: 20)));
   }
 }

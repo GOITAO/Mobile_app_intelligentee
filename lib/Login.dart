@@ -50,14 +50,11 @@ class _LoginState extends State<Login> {
         );
       }
     } else {
-      // Vérification plus précise des erreurs
       String errorMessage = "Erreur lors de la connexion";
 
-      // Si l'API retourne un message d'erreur spécifique
       if (response != null && response['message'] != null) {
         errorMessage = response['message'];
       } else if (response == null) {
-        // Si la réponse est nulle, cela peut être dû à un problème de réseau
         errorMessage = "Problème de connexion au serveur. Veuillez réessayer plus tard.";
       }
 
@@ -74,6 +71,15 @@ class _LoginState extends State<Login> {
       appBar: AppBar(
         title: const Text('Connexion'),
         backgroundColor: const Color.fromARGB(255, 35, 111, 252),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(24.0),

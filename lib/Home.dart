@@ -1,7 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:app/QuestionnaireHeartApp.dart';
-import 'package:app/QuestionnaireKidneyApp.dart';
 import 'package:app/QuestionnaireDiabeteApp.dart';
+import 'package:flutter/material.dart';
+import 'package:app/MaladiesInfantilesApp.dart';
+import 'package:app/HeartHealthApp.dart';
+
+import 'QuestionnaireHeartApp.dart';
+import 'QuestionnaireKidneyApp.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,13 +18,14 @@ class _HomeScreenState extends State<HomeScreen> {
     HealthIcon(imagePath: 'images/heart.png', label: 'Heart'),
     HealthIcon(imagePath: 'images/kidney.png', label: 'Kidney'),
     HealthIcon(imagePath: 'images/diabet.png', label: 'Insulin'),
+
+  ];
+  final List<Widget> pages = [
+    HeartHealthApp(),   MaladiesInfantilesApp()
+    ,   QuestionnaireKidneyApp()
+
   ];
 
-  final List<Widget> pages = [
-    QuestionnaireHeartApp(),
-    QuestionnaireKidneyApp(),
-    QuestionnaireDiabeteApp(),
-  ];
 
   final Color _primaryColor = const Color.fromARGB(255, 35, 111, 252);
   final Color _secondaryColor = const Color.fromARGB(255, 19, 237, 154);
@@ -34,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: _primaryColor,
         actions: [
           IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
+            icon: Icon(Icons.notifications, color: Colors.white),
             onPressed: () {},
           ),
         ],
@@ -73,8 +77,8 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 10),
               ElevatedButton.icon(
                 onPressed: () {},
-                icon: const Icon(Icons.add, color: Colors.white),
-                label: const Text('+Health', style: TextStyle(color: Colors.white)),
+                icon: Icon(Icons.add, color: Colors.white),
+                label: Text('+Health', style: TextStyle(color: Colors.white)),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _secondaryColor,
                 ),
@@ -84,17 +88,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 spacing: 20,
                 runSpacing: 20,
                 children: _healthIcons.asMap().entries.map((entry) {
-                  final index = entry.key;
-                  final icon = entry.value;
-                  return _buildHealthIcon(icon, pages[index]);
-                }).toList(),
+                  final index = entry.key; // Indice de l'icône
+                  final icon = entry.value; // Icône correspondante
+                  return _buildHealthIcon(icon, pages[index]); // Utiliser l'indice pour accéder à la page correspondante
+                })
+                    .toList(),
               ),
             ],
           ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        iconSize: 32,
+        iconSize: 32, // Augmenter la taille des icônes
         selectedItemColor: _primaryColor,
         unselectedItemColor: const Color.fromARGB(255, 217, 215, 215),
         items: const [
@@ -154,6 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      // Encapsuler le Text dans un GestureDetector
                       GestureDetector(
                         onTap: () {
                           Navigator.push(
@@ -165,18 +171,26 @@ class _HomeScreenState extends State<HomeScreen> {
                         },
                         child: Text(
                           'My ${healthIcon.label}',
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 14,
                             color: Colors.white,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
                       ),
+
+                      // Espacement
                       const SizedBox(width: 8),
-                      const Icon(
-                        Icons.arrow_forward,
-                        color: Colors.white,
-                        size: 18,
+
+                      // Encapsuler l'Icon dans un autre GestureDetector
+                      GestureDetector(
+                        onTap: () {
+                        },
+                        child: Icon(
+                          Icons.arrow_forward,
+                          color: _secondaryColor,
+                          size: 18,
+                        ),
                       ),
                     ],
                   ),
@@ -187,9 +201,8 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
   Widget _buildActionCard(String title, IconData icon) {
-    return Container(   
+    return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: _primaryColor.withOpacity(0.1),
@@ -202,10 +215,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Text(
             title,
             style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: _primaryColor,
-            ),
-          ),
+                fontWeight: FontWeight.bold,
+                color: _primaryColor),
+          )
         ],
       ),
     );
