@@ -1,3 +1,4 @@
+import 'package:app/kidney_feature.dart';
 import 'package:flutter/material.dart';
 import 'package:app/main.dart';
 
@@ -58,34 +59,48 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
 
   void _showResultDialog() {
     double probability = (_yesCount / _questions.length) * 100;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Result"),
-          content: Text(_getDiagnosisMessage(probability)),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _resetQuestionnaire();
-              },
-              child: const Text("Restart"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _resetQuestionnaire();
-                setState(() {
-                  _selectedIndex = 0; // Retour à "Home"
-                });
-              },
-              child: const Text("Back to Home"),
-            ),
-          ],
-        );
-      },
-    );
+    String message = _getDiagnosisMessage(probability);
+
+    if (probability > 50) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => KidneyResultPage(
+            probability: probability,
+            message: message,
+          ),
+        ),
+      ).then((_) => _resetQuestionnaire());
+    } else {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text("Result"),
+            content: Text(message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _resetQuestionnaire();
+                },
+                child: const Text("Restart"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _resetQuestionnaire();
+                  setState(() {
+                    _selectedIndex = 0;
+                  });
+                },
+                child: const Text("Back to Home"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   String _getDiagnosisMessage(double probability) {
@@ -109,7 +124,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.pop(context); // Retour à la page précédente
+            Navigator.pop(context);
           },
         ),
       ),
@@ -205,8 +220,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
     );
   }
 
-  Widget _buildAnswerButton(
-      String text, Color bgColor, Color textColor, IconData icon, bool isYes) {
+  Widget _buildAnswerButton(String text, Color bgColor, Color textColor, IconData icon, bool isYes) {
     return ElevatedButton.icon(
       onPressed: () => _nextQuestion(isYes),
       icon: Icon(icon, color: textColor),

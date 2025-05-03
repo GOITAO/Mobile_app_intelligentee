@@ -31,8 +31,13 @@ dependencies:
   flutter:
     sdk: flutter
   shared_preferences: ^2.0.15
-
+  image_picker: ^1.1.2
+  file_picker: ^10.1.0
+  path: any
+  path_provider: any
+  universal_html: ^2.2.4
   http: ^0.13.6  # Vérifiez si une version plus récente est disponible
+  fl_chart: ^0.66.1  # Vérifiez la dernière version sur pub.dev
 
 
 

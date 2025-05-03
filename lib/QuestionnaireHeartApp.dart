@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'HeartHealthApp.dart';
-
-void main() {
-  runApp(QuestionnaireHeartApp());
-}
+import 'HeartHealthApp.dart'; // Assurez-vous que ce fichier contient les autres pages si nécessaires
+import 'heart_feature.dart'; // À créer en dessous
 
 class QuestionnaireHeartApp extends StatelessWidget {
   @override
@@ -13,16 +9,14 @@ class QuestionnaireHeartApp extends StatelessWidget {
       title: 'Heart Questionnaire',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.red),
-      home: QuestionnairePage(),
+      home: MainNavigation(),
     );
   }
 }
 
 class MainNavigation extends StatefulWidget {
   final int initialIndex;
-
   MainNavigation({this.initialIndex = 0});
-
   @override
   _MainNavigationState createState() => _MainNavigationState();
 }
@@ -93,41 +87,57 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
       if (_currentQuestionIndex < _questions.length - 1) {
         _currentQuestionIndex++;
       } else {
-        _showResultDialog();
+        _showResult();
       }
     });
   }
 
-  void _showResultDialog() {
+  void _showResult() {
     double probability = (_yesCount / _questions.length) * 100;
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text("Result"),
-          content: Text(_getDiagnosisMessage(probability)),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                _resetQuestionnaire();
-              },
-              child: Text("Restart"),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => MainNavigation(initialIndex: 0)),
-                );
-              },
-              child: Text("Back to Home"),
-            ),
-          ],
-        );
-      },
-    );
+
+    if (probability > 50) {
+      // Redirection vers une autre page si le risque est > 50%
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HeartResultPage(
+            probability: probability,
+            message: _getDiagnosisMessage(probability),
+          ),
+        ),
+      );
+    } else {
+      // Sinon, on affiche simplement un AlertDialog
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Result"),
+            content: Text(_getDiagnosisMessage(probability)),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  _resetQuestionnaire();
+                },
+                child: Text("Restart"),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => MainNavigation(initialIndex: 0)),
+                  );
+                },
+                child: Text("Back to Home"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   String _getDiagnosisMessage(double probability) {
@@ -249,7 +259,6 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> {
   }
 }
 
-// Placeholder for History tab
 class HistoryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -257,7 +266,6 @@ class HistoryScreen extends StatelessWidget {
   }
 }
 
-// Placeholder for Profile tab
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

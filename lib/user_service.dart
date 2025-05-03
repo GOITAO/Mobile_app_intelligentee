@@ -1,15 +1,16 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   final String baseUrl = "http://192.168.0.6:5000/users"; // Utilisez HTTPS pour plus de sécurité
 
   // Inscription de l'utilisateur
   Future<Map<String, dynamic>?> registerUser(
-    String username,
-    String email,
-    String password,
-  ) async {
+      String username,
+      String email,
+      String password,
+      ) async {
     try {
       final response = await http.post(
         Uri.parse(baseUrl),
@@ -22,7 +23,14 @@ class UserService {
       );
 
       if (response.statusCode == 201) {
-        return jsonDecode(response.body);
+        // L'utilisateur est créé avec succès, on stocke le user_id
+        final responseData = jsonDecode(response.body);
+        int userId = responseData['user_id'];
+
+        // Stocker le user_id dans les SharedPreferences
+        await _saveUserId(userId);
+
+        return responseData;
       } else {
         print("Erreur API (${response.statusCode}) : ${response.body}");
         return _handleError(response);
@@ -46,7 +54,14 @@ class UserService {
       );
 
       if (response.statusCode == 200) {
-        return jsonDecode(response.body);
+        // Connexion réussie, on stocke le user_id
+        final responseData = jsonDecode(response.body);
+        int userId = responseData['user_id'];
+
+        // Stocker le user_id dans les SharedPreferences
+        await _saveUserId(userId);
+
+        return responseData;
       } else {
         print("Erreur API (${response.statusCode}) : ${response.body}");
         return _handleError(response);
@@ -55,6 +70,18 @@ class UserService {
       print("Erreur de connexion : $e");
       return {'error': 'Erreur de connexion'};
     }
+  }
+
+  // Sauvegarder le user_id dans SharedPreferences
+  Future<void> _saveUserId(int userId) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setInt('user_id', userId); // Sauvegarder le user_id
+  }
+
+  // Récupérer le user_id depuis SharedPreferences
+  Future<int?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.getInt('user_id'); // Récupérer le user_id
   }
 
   // Gestion des erreurs API
