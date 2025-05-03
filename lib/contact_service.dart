@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ContactService {
-  final String baseUrl = "http://192.168.0.6:5000/contacts";
+  final String baseUrl = "http://192.168.137.126:5000/contacts";
 
   // Créer un contact avec poids et âge en tant que double
   Future<Map<String, dynamic>?> createContact(double poids, double age, String token) async {

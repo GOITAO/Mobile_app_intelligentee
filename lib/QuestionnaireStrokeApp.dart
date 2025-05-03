@@ -4,8 +4,8 @@ import 'package:app/Home.dart';
 import 'package:app/ProfilePage.dart';
 import 'package:app/HistoryPage.dart';
 
-class QuestionnaireDiabeteApp extends StatelessWidget {
-  const QuestionnaireDiabeteApp({super.key});
+class QuestionnaireStrokeApp extends StatelessWidget {
+  const QuestionnaireStrokeApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,19 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
-  final Color _primaryColor = Colors.green;
+  final Color _primaryColor = Colors.deepOrange;
 
   final List<String> _questions = [
-    "Do you frequently feel thirsty?",
-    "Do you often urinate?",
-    "Do you feel extreme fatigue?",
-    "Do you have blurry vision?",
-    "Have you noticed weight loss recently?",
-    "Do you feel hungrier than usual?",
-    "Do your wounds heal slowly?",
-    "Do you feel numbness or tingling in feet/hands?",
-    "Do you often feel irritable or moody?",
-    "Do you have dry skin?",
+    "Do you feel sudden numbness or weakness in the face, arm, or leg?",
+    "Do you have trouble speaking or understanding speech?",
+    "Do you experience sudden trouble seeing in one or both eyes?",
+    "Do you have sudden difficulty walking or dizziness?",
+    "Do you experience sudden severe headache with no known cause?",
+    "Have you noticed sudden confusion?",
+    "Do you have difficulty swallowing?",
+    "Do you lose balance or coordination suddenly?",
+    "Do you experience sudden blurred vision?",
+    "Have you ever fainted unexpectedly?",
   ];
 
   @override
@@ -95,7 +95,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
         context: context,
         builder: (_) => AlertDialog(
           title: const Text("⚠️ High Risk Detected"),
-          content: const Text("We recommend consulting a doctor or using the AI diagnostic form."),
+          content: const Text("We suggest consulting a neurologist or using the AI diagnostic form."),
           actions: [
             TextButton(onPressed: () => Navigator.pop(context), child: const Text("Stay")),
             TextButton(
@@ -108,7 +108,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                // TODO: Implement IA Diagnostic Form for diabetes
+                // TODO: Implement AI Diagnostic Form for Stroke
               },
               child: const Text("Go to AI Form"),
             ),
@@ -130,23 +130,23 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
   }
 
   String _getDiagnosisMessage(double probability) {
-    if (probability >= 70) return "High risk of diabetes. Please consult your doctor.";
-    if (probability >= 40) return "Moderate risk. Keep monitoring your symptoms.";
-    return "Low risk. Maintain a healthy lifestyle.";
+    if (probability >= 70) return "High risk of stroke. Please consult a neurologist immediately.";
+    if (probability >= 40) return "Moderate risk. Monitor your health closely.";
+    return "Low risk. Continue leading a healthy lifestyle.";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Diabetes Questionnaire'),
+        title: const Text('Stroke Questionnaire'),
         backgroundColor: _primaryColor,
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.green),
+              decoration: BoxDecoration(color: Colors.deepOrange),
               child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ListTile(
@@ -187,13 +187,13 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
             const SizedBox(height: 30),
             ScaleTransition(
               scale: _scaleAnimation,
-              child: Image.asset("images/diabet.png", height: 140),
+              child: Image.asset("images/stroke.png", height: 140),
             ),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                "Let's check your risk of diabetes",
+                "Let's check your risk of stroke",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -251,7 +251,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildAnswerButton("Yes", Colors.green, Colors.white, Icons.check, true),
+        _buildAnswerButton("Yes", Colors.deepOrange, Colors.white, Icons.check, true),
         const SizedBox(width: 20),
         _buildAnswerButton("No", Colors.grey, Colors.white, Icons.close, false),
       ],
@@ -278,14 +278,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
         IconButton(
           onPressed: _prevQuestion,
           icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.green,
+          color: Colors.deepOrange,
           iconSize: 32,
         ),
         const SizedBox(width: 40),
         IconButton(
           onPressed: _nextQuestion,
           icon: const Icon(Icons.arrow_forward_ios),
-          color: Colors.green,
+          color: Colors.deepOrange,
           iconSize: 32,
         ),
       ],

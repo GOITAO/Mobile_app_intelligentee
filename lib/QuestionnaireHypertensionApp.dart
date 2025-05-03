@@ -4,8 +4,8 @@ import 'package:app/Home.dart';
 import 'package:app/ProfilePage.dart';
 import 'package:app/HistoryPage.dart';
 
-class QuestionnaireDiabeteApp extends StatelessWidget {
-  const QuestionnaireDiabeteApp({super.key});
+class QuestionnaireHypertensionApp extends StatelessWidget {
+  const QuestionnaireHypertensionApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,19 +29,19 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
 
-  final Color _primaryColor = Colors.green;
+  final Color _primaryColor = Colors.purple;
 
   final List<String> _questions = [
-    "Do you frequently feel thirsty?",
-    "Do you often urinate?",
-    "Do you feel extreme fatigue?",
-    "Do you have blurry vision?",
-    "Have you noticed weight loss recently?",
-    "Do you feel hungrier than usual?",
-    "Do your wounds heal slowly?",
-    "Do you feel numbness or tingling in feet/hands?",
-    "Do you often feel irritable or moody?",
-    "Do you have dry skin?",
+    "Do you often have headaches?",
+    "Do you feel dizziness or fainting spells?",
+    "Do you experience nosebleeds frequently?",
+    "Do you often feel shortness of breath?",
+    "Do you have blurred vision sometimes?",
+    "Do you feel chest pain occasionally?",
+    "Do you notice irregular heartbeats?",
+    "Do you feel tired easily?",
+    "Do you have trouble sleeping at night?",
+    "Do you experience confusion or memory problems?",
   ];
 
   @override
@@ -108,7 +108,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                // TODO: Implement IA Diagnostic Form for diabetes
+                // TODO: Implement IA Diagnostic Form for Hypertension
               },
               child: const Text("Go to AI Form"),
             ),
@@ -130,23 +130,23 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
   }
 
   String _getDiagnosisMessage(double probability) {
-    if (probability >= 70) return "High risk of diabetes. Please consult your doctor.";
-    if (probability >= 40) return "Moderate risk. Keep monitoring your symptoms.";
-    return "Low risk. Maintain a healthy lifestyle.";
+    if (probability >= 70) return "High risk of hypertension. Please consult a doctor.";
+    if (probability >= 40) return "Moderate risk. Monitor your blood pressure regularly.";
+    return "Low risk. Keep maintaining a healthy lifestyle.";
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Diabetes Questionnaire'),
+        title: const Text('Hypertension Questionnaire'),
         backgroundColor: _primaryColor,
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.green),
+              decoration: BoxDecoration(color: Colors.purple),
               child: Text("Menu", style: TextStyle(color: Colors.white, fontSize: 24)),
             ),
             ListTile(
@@ -187,13 +187,13 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
             const SizedBox(height: 30),
             ScaleTransition(
               scale: _scaleAnimation,
-              child: Image.asset("images/diabet.png", height: 140),
+              child: Image.asset("images/hypertention.png", height: 140),
             ),
             const SizedBox(height: 20),
             const Padding(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Text(
-                "Let's check your risk of diabetes",
+                "Let's check your risk of hypertension",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
@@ -251,7 +251,7 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _buildAnswerButton("Yes", Colors.green, Colors.white, Icons.check, true),
+        _buildAnswerButton("Yes", Colors.purple, Colors.white, Icons.check, true),
         const SizedBox(width: 20),
         _buildAnswerButton("No", Colors.grey, Colors.white, Icons.close, false),
       ],
@@ -278,14 +278,14 @@ class _QuestionnaireScreenState extends State<QuestionnaireScreen> with SingleTi
         IconButton(
           onPressed: _prevQuestion,
           icon: const Icon(Icons.arrow_back_ios),
-          color: Colors.green,
+          color: Colors.purple,
           iconSize: 32,
         ),
         const SizedBox(width: 40),
         IconButton(
           onPressed: _nextQuestion,
           icon: const Icon(Icons.arrow_forward_ios),
-          color: Colors.green,
+          color: Colors.purple,
           iconSize: 32,
         ),
       ],
