@@ -20,10 +20,10 @@ class NotificationService {
     await _notificationsPlugin.initialize(initSettings);
 
     // Optionnel : demande de permission sur Android 13+
-    await _notificationsPlugin
-        .resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestPermission();
+    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
+    await _notificationsPlugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+    await androidImplementation?.requestPermission();
   }
 
   /// Planifie une notification à une date donnée
@@ -33,24 +33,28 @@ class NotificationService {
     required String body,
     required DateTime scheduledDate,
   }) async {
-    await _notificationsPlugin.zonedSchedule(
-      id,
-      title,
-      body,
-      tz.TZDateTime.from(scheduledDate, tz.local),
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'health_channel', // ID du canal
-          'Health Reminders', // Nom du canal
-          channelDescription:
-          'Reminder notifications for retests and alerts.',
-          importance: Importance.high,
-          priority: Priority.high,
+    try {
+      await _notificationsPlugin.zonedSchedule(
+        id,
+        title,
+        body,
+        tz.TZDateTime.from(scheduledDate, tz.local),
+        const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'health_channel', // ID du canal
+            'Health Reminders', // Nom du canal
+            channelDescription: 'Reminder notifications for retests and alerts.',
+            importance: Importance.high,
+            priority: Priority.high,
+            ticker: 'ticker',
+          ),
         ),
-      ),
-      androidAllowWhileIdle: true,
-      uiLocalNotificationDateInterpretation:
-      UILocalNotificationDateInterpretation.absoluteTime,
-    );
+        androidAllowWhileIdle: true,
+        uiLocalNotificationDateInterpretation:
+        UILocalNotificationDateInterpretation.absoluteTime,
+      );
+    } catch (e) {
+      print("Erreur lors de la planification de la notification: $e");
+    }
   }
 }
