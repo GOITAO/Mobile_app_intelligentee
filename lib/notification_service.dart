@@ -1,6 +1,7 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'dart:io'; // Pour Platform.isAndroid
 
 class NotificationService {
   static final FlutterLocalNotificationsPlugin _notificationsPlugin =
@@ -12,18 +13,29 @@ class NotificationService {
 
     const AndroidInitializationSettings androidSettings =
     AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings iosSettings = DarwinInitializationSettings();
 
     const InitializationSettings initSettings = InitializationSettings(
       android: androidSettings,
+      iOS: iosSettings, // Ajout pour iOS
     );
 
     await _notificationsPlugin.initialize(initSettings);
 
-    // Optionnel : demande de permission sur Android 13+
-    final AndroidFlutterLocalNotificationsPlugin? androidImplementation =
-    await _notificationsPlugin.resolvePlatformSpecificImplementation<
-        AndroidFlutterLocalNotificationsPlugin>();
-    await androidImplementation?.requestPermission();
+    // Demande de permission sur Android 13+ et iOS
+    if (Platform.isAndroid) {
+      final androidImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>();
+      await androidImplementation?.requestNotificationsPermission(); // Correction du nom de méthode
+    } else if (Platform.isIOS) {
+      final iosImplementation = _notificationsPlugin
+          .resolvePlatformSpecificImplementation<DarwinFlutterLocalNotificationsPlugin>();
+      await iosImplementation?.requestPermissions(
+        alert: true,
+        badge: true,
+        sound: true,
+      );
+    }
   }
 
   /// Planifie une notification à une date donnée
@@ -44,10 +56,12 @@ class NotificationService {
             'health_channel', // ID du canal
             'Health Reminders', // Nom du canal
             channelDescription: 'Reminder notifications for retests and alerts.',
-            importance: Importance.high,
+            importance: Importance.max, // Changé de high à max
             priority: Priority.high,
             ticker: 'ticker',
+            scheduleMode: AndroidScheduleMode.exactAllowWhileIdle, // Paramètre ajouté
           ),
+          iOS: DarwinNotificationDetails(), // Ajout pour iOS
         ),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
