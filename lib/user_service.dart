@@ -3,7 +3,8 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  final String baseUrl = "http://192.168.0.6:5000/users"; // Utilisez HTTPS pour plus de sécurité
+  final String baseUrl =
+      "http://192.168.1.72:5000/users"; // ⚠️ Changez l'IP en production
 
   // Inscription de l'utilisateur
   Future<Map<String, dynamic>?> registerUser(
@@ -47,10 +48,7 @@ class UserService {
       final response = await http.post(
         Uri.parse("$baseUrl/login"),
         headers: {"Content-Type": "application/json"},
-        body: jsonEncode({
-          "email": email,
-          "password": password,
-        }),
+        body: jsonEncode({"email": email, "password": password}),
       );
 
       if (response.statusCode == 200) {

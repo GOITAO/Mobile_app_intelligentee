@@ -7,7 +7,7 @@ import 'package:app/QuestionnaireKidneyApp.dart';
 
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required String username});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();

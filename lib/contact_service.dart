@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ContactService {
   final String baseUrl = "http://192.168.0.6:5000/contacts"; // URL de votre serveur
 
+
   // Créer un contact avec poids, âge et utiliser le token pour l'authentification
   Future<Map<String, dynamic>?> createContact(double poids, double age, String token) async {
     try {
